@@ -17,6 +17,7 @@ services:
       - DB_USER=admin
       - DB_PASSWORD=admin_password
       - DB_NAME=eval_db
+      - DB_SYNCHRONIZE=true
       - REDIS_HOST=redis
       - REDIS_PORT=6379
     command: npm run start:dev

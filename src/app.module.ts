@@ -5,9 +5,10 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './infrastructure/database/database.module';
 import { QueueModule } from './infrastructure/queue/queue.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), DatabaseModule, QueueModule, AuthModule],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), DatabaseModule, QueueModule, AuthModule, UserModule],
   controllers: [AppController],
   providers: [AppService],
 })

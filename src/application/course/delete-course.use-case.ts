@@ -1,9 +1,9 @@
 import type { ICourseRepository } from '../../domain/repositories/course.repository.interface';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 
 @Injectable()
 export class DeleteCourseUseCase {
-  constructor(private readonly courseRepository: ICourseRepository) {}
+  constructor(@Inject('ICourseRepository') private readonly courseRepository: ICourseRepository) {}
 
   async execute(courseId: string): Promise<void> {
     const course = await this.courseRepository.findById(courseId);

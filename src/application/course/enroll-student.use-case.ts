@@ -1,14 +1,14 @@
 import type { ICourseRepository } from '../../domain/repositories/course.repository.interface';
 import type { ICourseEnrollmentRepository } from '../../domain/repositories/course-enrollment.repository.interface';
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException, Inject } from '@nestjs/common';
 import { CourseEnrollment } from '../../domain/entities/course-enrollment.entity';
 import { EnrollmentStatus } from '../../domain/enums/enrollment-status.enum';
 
 @Injectable()
 export class EnrollStudentUseCase {
   constructor(
-    private readonly courseRepository: ICourseRepository,
-    private readonly enrollmentRepository: ICourseEnrollmentRepository,
+    @Inject('ICourseRepository') private readonly courseRepository: ICourseRepository,
+    @Inject('ICourseEnrollmentRepository') private readonly enrollmentRepository: ICourseEnrollmentRepository,
   ) {}
 
   async execute(courseId: string, studentId: string): Promise<CourseEnrollment> {

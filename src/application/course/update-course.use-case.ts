@@ -1,11 +1,11 @@
 import type { ICourseRepository } from '../../domain/repositories/course.repository.interface';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { Course } from '../../domain/entities/course.entity';
 import type { UpdateCourseDto } from '../../modules/course/dto/update-course.dto';
 
 @Injectable()
 export class UpdateCourseUseCase {
-  constructor(private readonly courseRepository: ICourseRepository) {}
+  constructor(@Inject('ICourseRepository') private readonly courseRepository: ICourseRepository) {}
 
   async execute(courseId: string, dto: UpdateCourseDto): Promise<Course> {
     const course = await this.courseRepository.findById(courseId);

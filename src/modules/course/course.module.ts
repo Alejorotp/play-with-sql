@@ -16,8 +16,8 @@ import { CourseController } from './course.controller';
 @Module({
   imports: [TypeOrmModule.forFeature([Course, CourseEnrollment])],
   providers: [
-    CourseRepository,
-    CourseEnrollmentRepository,
+    { provide: 'ICourseRepository', useClass: CourseRepository },
+    { provide: 'ICourseEnrollmentRepository', useClass: CourseEnrollmentRepository },
     CreateCourseUseCase,
     GetCourseUseCase,
     GetCoursesUseCase,
@@ -27,6 +27,6 @@ import { CourseController } from './course.controller';
     CourseService,
   ],
   controllers: [CourseController],
-  exports: [CourseRepository, CourseEnrollmentRepository],
+  exports: ['ICourseRepository', 'ICourseEnrollmentRepository'],
 })
 export class CourseModule {}

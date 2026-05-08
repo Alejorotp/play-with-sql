@@ -2,6 +2,12 @@ import { IsString, IsNotEmpty, Length, Matches } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCourseDto {
+
+  @ApiProperty({ description: 'Professor ID', example: '242e5d1d-1dc6-42fb-a02e-69526636c67d' })
+  @IsString()
+  @IsNotEmpty()
+  professorId: string;
+
   @ApiProperty({ description: 'Course name', example: 'Introduction to SQL' })
   @IsString()
   @IsNotEmpty()

@@ -19,10 +19,10 @@ export class CourseService {
     private readonly updateCourseUseCase: UpdateCourseUseCase,
     private readonly deleteCourseUseCase: DeleteCourseUseCase,
     private readonly enrollStudentUseCase: EnrollStudentUseCase,
-  ) {}
+  ) { }
 
-  async create(professorId: string, dto: CreateCourseDto): Promise<CourseResponseDto> {
-    const course = await this.createCourseUseCase.execute(professorId, dto);
+  async create(dto: CreateCourseDto): Promise<CourseResponseDto> {
+    const course = await this.createCourseUseCase.execute(dto);
     return this.mapToCourseResponseDto(course);
   }
 

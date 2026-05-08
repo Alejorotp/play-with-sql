@@ -9,15 +9,14 @@ import { EnrollStudentDto } from './dto/enroll-student.dto';
 @ApiTags('courses')
 @Controller('courses')
 export class CourseController {
-  constructor(private readonly courseService: CourseService) {}
+  constructor(private readonly courseService: CourseService) { }
 
   @Post()
   @ApiOperation({ summary: 'Create a new course' })
   @ApiResponse({ status: 201, description: 'Course created successfully', type: CourseResponseDto })
   @ApiBadRequestResponse({ description: 'Invalid input or course code already exists' })
   async create(@Body() dto: CreateCourseDto): Promise<CourseResponseDto> {
-    const professorId = 'temp-professor-id';
-    return this.courseService.create(professorId, dto);
+    return this.courseService.create(dto);
   }
 
   @Get()

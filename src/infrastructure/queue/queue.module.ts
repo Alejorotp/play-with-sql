@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BullModule } from '@nestjs/bullmq';
 import { SQL_SUBMISSIONS_QUEUE_NAME } from './queue.constants';
+import { QueueModuleOptions } from './queue.interfaces';
 
 @Module({
   imports: [
@@ -9,7 +10,7 @@ import { SQL_SUBMISSIONS_QUEUE_NAME } from './queue.constants';
     BullModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: (configService: ConfigService): QueueModuleOptions => ({
         connection: {
           host: configService.get<string>('REDIS_HOST', 'localhost'),
           port: parseInt(configService.get<string>('REDIS_PORT', '6379'), 10),

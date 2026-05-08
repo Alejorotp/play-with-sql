@@ -18,10 +18,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         synchronize: configService.get<string>('DB_SYNCHRONIZE', 'false') === 'true',
         logging: configService.get<string>('DB_LOGGING', 'false') === 'true',
         autoLoadEntities: true,
-        entities: [__dirname + '/../../../**/*.entity{.ts,.js}'],
+        entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       }),
     }),
   ],
   exports: [TypeOrmModule],
 })
-export class DatabaseModule {}
+export class DatabaseModule { }

@@ -7,9 +7,10 @@ import { QueueModule } from './infrastructure/queue/queue.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { CourseModule } from './modules/course/course.module';
+import { ChallengeModule } from './modules/challenge/challenge.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), DatabaseModule, QueueModule, AuthModule, UserModule, CourseModule],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), DatabaseModule, QueueModule, AuthModule, UserModule, CourseModule, ChallengeModule],
   controllers: [AppController],
   providers: [AppService],
 })

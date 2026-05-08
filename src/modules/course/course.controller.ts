@@ -1,5 +1,9 @@
-import { Controller, Post, Get, Patch, Delete, Param, Body, HttpCode, HttpStatus } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBadRequestResponse, ApiNotFoundResponse } from '@nestjs/swagger';
+import { Controller, Post, Get, Patch, Delete, Param, Body, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBadRequestResponse, ApiNotFoundResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { Roles } from '../../infrastructure/auth/decorators/roles.decorator';
+import { Role } from '../../infrastructure/auth/enums/role.enum';
+import { JwtAuthGuard } from '../../infrastructure/auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../../infrastructure/auth/guards/roles.guard';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
@@ -7,11 +11,14 @@ import { CourseResponseDto } from './dto/course-response.dto';
 import { EnrollStudentDto } from './dto/enroll-student.dto';
 
 @ApiTags('courses')
+@ApiBearerAuth()
 @Controller('courses')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class CourseController {
   constructor(private readonly courseService: CourseService) { }
 
   @Post()
+  @Roles(Role.ADMIN, Role.PROFESSOR)
   @ApiOperation({ summary: 'Create a new course' })
   @ApiResponse({ status: 201, description: 'Course created successfully', type: CourseResponseDto })
   @ApiBadRequestResponse({ description: 'Invalid input or course code already exists' })
@@ -20,6 +27,7 @@ export class CourseController {
   }
 
   @Get()
+  @Roles(Role.ADMIN, Role.PROFESSOR, Role.STUDENT)
   @ApiOperation({ summary: 'Get all active courses' })
   @ApiResponse({ status: 200, description: 'List of courses', type: [CourseResponseDto] })
   async findAll(): Promise<CourseResponseDto[]> {
@@ -27,6 +35,7 @@ export class CourseController {
   }
 
   @Get(':id')
+  @Roles(Role.ADMIN, Role.PROFESSOR, Role.STUDENT)
   @ApiOperation({ summary: 'Get a course by ID' })
   @ApiResponse({ status: 200, description: 'Course found', type: CourseResponseDto })
   @ApiNotFoundResponse({ description: 'Course not found' })
@@ -35,6 +44,7 @@ export class CourseController {
   }
 
   @Patch(':id')
+  @Roles(Role.ADMIN, Role.PROFESSOR)
   @ApiOperation({ summary: 'Update a course' })
   @ApiResponse({ status: 200, description: 'Course updated successfully', type: CourseResponseDto })
   @ApiNotFoundResponse({ description: 'Course not found' })
@@ -43,6 +53,7 @@ export class CourseController {
   }
 
   @Delete(':id')
+  @Roles(Role.ADMIN, Role.PROFESSOR)
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Delete a course' })
   @ApiResponse({ status: 204, description: 'Course deleted successfully' })
@@ -52,6 +63,7 @@ export class CourseController {
   }
 
   @Post(':id/enroll')
+  @Roles(Role.ADMIN, Role.PROFESSOR, Role.STUDENT)
   @ApiOperation({ summary: 'Enroll a student in a course' })
   @ApiResponse({ status: 200, description: 'Student enrolled successfully' })
   @ApiBadRequestResponse({ description: 'Student already enrolled or invalid input' })
